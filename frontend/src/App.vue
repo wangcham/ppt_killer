@@ -1,31 +1,56 @@
 <template>
-  <div>
+  <div class="container">
       <div class="all" v-loading="isloading">
         <div v-if="!fileuploaded" style="display:flex;flex-direction:column;">
+          <h3 class="ppt-killer-text">ppt-killer</h3>
           <label for="file-input" class="file-input-label">
-            <span>选择图片</span>
-            <input id="file-input" type="file" accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" @change="onFileChange">
+            <span>目前支持pptx文件</span>
+            <el-button type="primary" class="custom-file-input" id="button" style="margin-left:10px">
+              点击这里开始上传文件
+              <input id="file-input" type="file" accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" @change="onFileChange" style="opacity: 0; position: absolute;height:100%;cursor: pointer;  " />
+            </el-button>
           </label>
         </div>
         <div v-if="fileuploaded">
-          <p>
-            已选择文件:pptx
+          <p style="" class="pp">
+            已选择文件:{{selectedFileName}}
           </p>
         </div>
         <div v-if="submitting">
-          <el-button type="button" @click="submitUpload" v-if="fileuploaded">上传</el-button>
+          <el-button type="button" @click="submitUpload" v-if="fileuploaded">询问AI</el-button>
           <el-button type="button" @click="cancel" v-if="fileuploaded">清除内容</el-button>
         </div>
         <div v-if="error">
-          <p>
-            发生错误:+{{this.message}}
+          <p class="pp">
+            发生错误 {{this.message}}
           </p>
         </div>
       <div>
-      <div v-html="compiledMarkdown"
+      </div>
+    </div>
+    <div v-if="isloading" style="display:flex;flex-direction:column;font-family: 'Source Han Sans SC', sans-serif; font-size: 15px; color: #333;">
+      <h3>提示：</h3>
+      <h4 style="margin-bottom:5px;margin-top:0;font-family: 'Source Han Sans SC', sans-serif;">如果上面的蓝色方框一直显示正在加载，不要着急，耐心等待一会儿，请不要关闭网页。</h4>
+      <h4 style="margin-top:1px;font-family: 'Source Han Sans SC', sans-serif;">AI生成回答之后，会弹出消息提示框，并且在蓝色方框下方生成MarkDown格式内容。</h4>
+      <h4 style="margin-top:0;">有些时候由于服务器和网络的原因，AI回复的速度会变得很慢，请保持耐心。</h4>
+      <h3 style="margin-top:0;">MarkDown格式的效果类似这种的：</h3>
+      <h3 style="margin-top:0;">我很喜欢U2乐队,为什么呢？</h3>
+      <ul style="margin-top:0;">
+        <li>因为他们的音乐很牛逼</li>
+        <li>因为我喜欢玩原神</li>
+        <li>因为我不是二次元</li>
+      </ul>
+      <p>这就是得到的效果，在得到AI回复后，本提示将会马上消失，祝你使用愉快!</p>
+    </div>
+    <div v-html="compiledMarkdown"
       style="margin-top:20px">
-      </div>
-      </div>
+    </div>
+    <div class="bottom">
+      <h6 style="margin-right:30px">Made By Wangcham</h6>
+      <el-link href="https://github.com/wangcham" type="success" target="_blank" :underline='false'>
+      点击查看我的GitHub
+        <el-icon style="margin-left:5px"><View /></el-icon>
+    </el-link>
     </div>
   </div>
 </template>
@@ -50,6 +75,7 @@ export default {
       submitting:true,
       error:false,
       message:'',
+      selectedFileName:'',
     };
   },
   computed:{
@@ -65,6 +91,7 @@ export default {
         if (this.file) {
           this.fileUrl = URL.createObjectURL(this.file);
           this.fileuploaded = true;
+          this.selectedFileName = this.file.name;
           console.log(this.file)
         }
         console.log(this.file);
@@ -81,6 +108,7 @@ export default {
       formData.append('file',this.file);
       this.isloading = true;
       this.submitting = false;
+      ElMessage.warning("AI正在生成")
       try {
         await axios.post(common.backend_prefix + '/getfile', formData)
           .then(response => {
@@ -91,9 +119,12 @@ export default {
               this.isloading = false
               this.error = true
               this.message = response.data.result
+              //清除文件内容
+              this.cancel()
             } else {
               this.markdown = response.data.result
               ElMessage.success("总结成功！")
+              this.cancel()
             }
           })
           .catch(error => {
@@ -104,12 +135,13 @@ export default {
           .finally(() => {
             // 隐藏 loading 界面
             this.isloading = false
-
+            this.cancel()
           });
       } catch (error) {
         // 处理 try 块中的错误
         console.log(error);
-        this.error = true
+        this.error = true;
+        this.cancel()
       }
     }
   }
@@ -117,17 +149,86 @@ export default {
 </script>
 
 <style>
-.all {
+  .all {
+    background-color: #3498db; /* 设置背景色为蓝色 */
+    border: 1px solid #2980b9; /* 添加细边框 */
+    border-radius: 8px; /* 使边框角圆润一些 */
+    padding: 20px; /* 增加内边距，让内容更好看 */
+    position: relative;
+    width: 100%;
+  }
+
+  .pp {
+    color: #fff; /* 设置段落文字颜色为白色 */
+  }
+
+  .el-button {
+    background-color: #2980b9; /* 设置按钮背景色为稍深的蓝色 */
+    border: none;
+    color: #fff; /* 设置按钮文字颜色为白色 */
+    border-radius: 4px; /* 圆润按钮的角 */
+    margin-right: 10px;
+  }
+
+  .el-button:hover {
+    background-color: #1f67a6; /* 设置按钮的鼠标悬停颜色 */
+  }
+
+  .el-button:disabled {
+    background-color: #ccc; /* 设置按钮的禁用状态颜色 */
+    color: #333; /* 设置文字颜色为灰色 */
+  }
+
+.file-input-container {
   display: flex;
-  flex-direction: column; /* 垂直居中 */
-  align-items: center; /* 水平居中 */
-  height: 100vh; /* 视口高度 */
+  align-items: center;
 }
 
-/* 让按钮水平排列 */
-.all > div:last-child {
-  display: flex;
-  gap: 10px; /* 按钮之间的间隔 */
+.ppt-killer-text {
+  position: relative;
+  top: 0;
+  margin-top: 10px;
+  font-size: 20px; /* 调整字体大小 */
+  color: #fff; /* 设置字体颜色为白色 */
+  margin-right: 20px; /* 调整"ppt-killer"文本和输入框之间的间距 */
 }
 
+.file-input-label {
+  display: inline-block;
+  padding: 10px;
+  background-color: #2980b9;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.custom-file-input {
+  border: 2px solid #2980b9;
+  background-color: #dbf6fb;
+  padding: 5px;
+  border-radius: 4px;
+  color: #2980b9;
+  cursor: pointer;
+}
+#button{
+  background-color: #fff; /* 设置按钮背景色为白色 */
+  border: none;
+  color: #2980b9; /* 设置按钮文字颜色为蓝色 */
+  border-radius: 4px; /* 圆润按钮的角 */
+  margin-right: 10px;
+}
+.container {
+  max-width: 100%; /* 设置最大宽度为视口宽度 */
+}
+.bottom{
+  position: absolute;
+  margin-bottom: 10px;
+  margin-left:30px;
+
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
 </style>
+
