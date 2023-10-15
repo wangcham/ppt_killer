@@ -22,7 +22,6 @@ class handle_file:
         ext = os.path.splitext(self.file.filename)[1]
         print('接受到的文件拓展名:'+ext)
         self.ext = ext
-        await self.handle()
 
     async def handle(self):
         if self.file:

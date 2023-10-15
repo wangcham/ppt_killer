@@ -1,23 +1,31 @@
 <template>
-  <div class="all">
-    <div v-if="!fileuploaded" style="display:flex;flex-direction:column;">
-      <label for="file-input" class="file-input-label">
-        <span>选择图片</span>
-        <input id="file-input" type="file" accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" @change="onFileChange">
-      </label>
-    </div>
-    <div v-if="fileuploaded">
-      <p>
-        已选择文件:pptx
-      </p>
-    </div>
-    <div>
-      <el-button type="button" @click="submitUpload" v-if="fileuploaded">上传</el-button>
-      <el-button type="button" @click="cancel" v-if="fileuploaded">清除内容</el-button>
-    </div>
-    <div v-pre> 
-    <div v-html="compiledMarkdown" v-loading="isloading">
-    </div>
+  <div>
+      <div class="all" v-loading="isloading">
+        <div v-if="!fileuploaded" style="display:flex;flex-direction:column;">
+          <label for="file-input" class="file-input-label">
+            <span>选择图片</span>
+            <input id="file-input" type="file" accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" @change="onFileChange">
+          </label>
+        </div>
+        <div v-if="fileuploaded">
+          <p>
+            已选择文件:pptx
+          </p>
+        </div>
+        <div v-if="submitting">
+          <el-button type="button" @click="submitUpload" v-if="fileuploaded">上传</el-button>
+          <el-button type="button" @click="cancel" v-if="fileuploaded">清除内容</el-button>
+        </div>
+        <div v-if="error">
+          <p>
+            发生错误:+{{this.message}}
+          </p>
+        </div>
+      <div>
+      <div v-html="compiledMarkdown"
+      style="margin-top:20px">
+      </div>
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +47,9 @@ export default {
       md:new MarkdownIt(),
       markdown:'',
       isloading:false,
+      submitting:true,
+      error:false,
+      message:'',
     };
   },
   computed:{
@@ -69,6 +80,7 @@ export default {
       let formData = new FormData();
       formData.append('file',this.file);
       this.isloading = true;
+      this.submitting = false;
       try {
         await axios.post(common.backend_prefix + '/getfile', formData)
           .then(response => {
@@ -77,6 +89,8 @@ export default {
             if (response.data.status === 'fail') {
               ElMessage.error(response.data.message)
               this.isloading = false
+              this.error = true
+              this.message = response.data.result
             } else {
               this.markdown = response.data.result
               ElMessage.success("总结成功！")
@@ -85,14 +99,17 @@ export default {
           .catch(error => {
             // 处理请求错误
             console.log(error);
+            this.error = true
           })
           .finally(() => {
             // 隐藏 loading 界面
             this.isloading = false
+
           });
       } catch (error) {
         // 处理 try 块中的错误
         console.log(error);
+        this.error = true
       }
     }
   }

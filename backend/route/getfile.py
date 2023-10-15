@@ -13,7 +13,7 @@ async def getfile():
         
         if file:
             print('后端接受到文件')
-            file_handler = await hs.handle_file.create(file)
+            file_handler =await hs.handle_file.create(file)
             operate = await file_handler.handle()
             print("进行操作,得到ppt")
             print(operate)
