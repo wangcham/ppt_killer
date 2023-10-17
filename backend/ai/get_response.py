@@ -24,7 +24,7 @@ class response:
             return self.result
         except Exception as e:
             print(traceback.format_exc())
-            self.result = "chatgpt响应异常,异常是" + str(e) + "，请稍后使用网站~"
+            self.result = "#### chatgpt响应异常,异常是" + str(e) + "请稍后使用网站~"
             return self.result
 
         

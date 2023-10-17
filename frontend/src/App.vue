@@ -4,7 +4,8 @@
         <div v-if="!fileuploaded" style="display:flex;flex-direction:column;">
           <h3 class="ppt-killer-text">PPT-killer</h3>
           <label for="file-input" class="file-input-label">
-            <span>目前支持pptx文件 ( 太大的文件可能会导致AI回复失效！) </span>
+            <span>目前支持pptx文件 ( 太大的文件可能会导致AI回复失效！) ( ctrl+s保存AI回复
+            <s></s>） </span>
             <el-button type="primary" class="custom-file-input" id="button" style="margin-left:10px">
               点击这里开始上传文件
               <input id="file-input" type="file" accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" @change="onFileChange" style="opacity: 0; position: absolute;height:100%;cursor: pointer;  " />
@@ -26,6 +27,9 @@
           </h3>
           <el-button type="default" @click="restart" style="margin-left:30px;margin-bottom:20px;">重新开始</el-button>
         </div>
+        <div v-if="successRestart" style="margin-left: 30px;margin-bottom: 5px;">
+          <el-button type="default" @click="restart">重新开始</el-button>
+        </div>
       <div>
       </div>
     </div>
@@ -43,9 +47,11 @@
       </ul>
       <p>这就是得到的效果，在得到AI回复后，本提示将会马上消失，祝你使用愉快!</p>
     </div>
-      <div v-html="compiledMarkdown"
-      style="margin-top:20px">
-      </div>
+
+    <div v-html="compiledMarkdown"
+    style="margin-top:20px">
+    </div>
+
     <div class="bottom">
       <h6 style="margin-right:30px">Made By Wangcham</h6>
       <el-link href="https://github.com/wangcham" type="success" target="_blank" :underline='false'>
@@ -56,6 +62,8 @@
         查看本站提示<el-icon style="margin-left:5px"><MagicStick /></el-icon>
       </el-link>
     </div>
+
+
     <el-dialog v-model="dialog" title="提示">
       <h4 style="margin-bottom:5px;margin-top:0;font-family: 'Source Han Sans SC', sans-serif;">如果上面的蓝色方框一直显示正在加载，不要着急，耐心等待一会儿，请不要关闭网页。</h4>
       <h4 style="margin-top:1px;font-family: 'Source Han Sans SC', sans-serif;">AI生成回答之后，会弹出消息提示框，并且在蓝色方框下方生成MarkDown格式内容。</h4>
@@ -72,6 +80,7 @@
       <p style="margin-top:0;">以上就是得到的效果</p>
       <p style="margin-top:0;">如果你只有ppt文件，那么请使用外部网站或者Microsoft Powerpoint</p>
       <p style="margin-top:0;">将ppt文件转换成pptx文件，外部网站可以自己搜索去转换文件。</p>
+      <h2>！本站不保存用户上传的任何文件！</h2>
       <h3>提示到这里就结束了，你很聪明，因为至少在使用前会去看看说明，感谢使用！</h3>
     </el-dialog>
   </div>
@@ -99,6 +108,7 @@ export default {
       message:'',
       selectedFileName:'',
       dialog:false,
+      successRestart:false,
     };
   },
   computed:{
@@ -134,7 +144,10 @@ export default {
       this.selectedFileName = '';
       this.fileuploaded = false;
       this.submitting = true;
+      this.text = '';
+      this.markdown = '';
       this.cancel();
+      this.successRestart = false;
     },
     async submitUpload() {
       let formData = new FormData();
@@ -148,14 +161,18 @@ export default {
             // 处理成功响应
             console.log(response);
             if (response.data.status === 'fail') {
+              if(response.data.message)
               ElMessage.error(response.data.message)
               this.isloading = false
               this.error = true
               this.message = response.data.result
             } else {
               this.markdown = response.data.result
-              ElMessage.success("总结成功！")
-              this.cancel()
+              this.successRestart = true;
+              ElMessage.success("成功响应！")
+              this.file = null;
+              this.fileUrl = null;
+              this.text = '';
             }
           })
           .catch(error => {

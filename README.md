@@ -6,3 +6,6 @@ use chatgpt to translate and summarize your pptx file
 * docker feature
 * more LLM supported
 * more file formats are supported
+
+![1](/assets/1.png)
+![2](/assets/2.png)
