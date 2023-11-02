@@ -1,3 +1,5 @@
 config.py
 
 /myvenv
+
+/sql.db

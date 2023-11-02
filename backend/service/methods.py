@@ -38,6 +38,7 @@ class GetText:
                 print("no text")
             
             self.text = text
+            #存数据库
             print("pptx发送ai")
             result = await self.send_to_ai(self.text)
             return result            
