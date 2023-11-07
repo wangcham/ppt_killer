@@ -1,6 +1,7 @@
 <template>
   <div v-loading="quesload">
     <div>
+      <p>{{ summarize }}</p>
         <el-button @click="getquestions" v-if="first">点击生成AI问题</el-button>
         <el-button v-if="!first" @click="getquestions">重新生成问题</el-button>
     </div>
@@ -35,6 +36,7 @@ export default {
     components:{
       SaveAnswer,
     },
+    props:['summarize'],
     data(){
         return{
             markdown:'',
@@ -70,7 +72,9 @@ export default {
           this.quesload = true
           this.first = false
           try{
-            axios.post(common.backend_prefix+'/getques')
+            axios.post(common.backend_prefix+'/getques',{
+              'content':this.summarize,
+            })
             .then(
               response =>{
                 console.log(response)

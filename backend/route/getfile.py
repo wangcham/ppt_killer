@@ -2,6 +2,9 @@ import traceback
 from quart import request,Blueprint,jsonify
 from quart_cors import cors
 import service.handle_service as hs
+from entities.exceptions import GetContentError,EmptyFileError
+
+
 getfile_app = Blueprint('getfile_app',__name__)
 cors(getfile_app)
 
@@ -19,8 +22,24 @@ async def getfile():
             return response
         else:
             return jsonify({'status':'fail','message':'接受文件失败','code':'0'})
-    except Exception as e:
+    except EmptyFileError:
         print(traceback.format_exc())
         return jsonify({'status':'fail','message':'抛出异常'})
+
+@getfile.route('/getques',methods=['post'])
+async def getques():
+    try:
+        data = request.get_json()
+        content = data['content']
+        #编写逻辑
+        if content:
+            pass
+        else:
+            return jsonify({'status':'fail','message':'获得的内容为空'})
+
+    except GetContentError as e:
+        return jsonify({'status':'fail','message':'获得内容失败'})
+
+    
 
 

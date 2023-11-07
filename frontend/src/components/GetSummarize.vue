@@ -55,7 +55,7 @@
         <el-button @click="ShowSave">保存总结</el-button>
       </div>
       <div style="margin-top: 10px;" v-if="compiledMarkdown">
-        <GetQuestions></GetQuestions>
+        <GetQuestions :summarize="markdown"></GetQuestions>
       </div>
     </div>
     <div>

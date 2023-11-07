@@ -1,5 +1,8 @@
 class EmptyFileError(Exception):
     pass
 
-class EmptyImageError(Exception):
+class ImageTransferError(Exception):
+    pass
+
+class GetContentError(Exception):
     pass
