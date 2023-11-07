@@ -14,10 +14,9 @@ async def getfile():
         if file:
             print('后端接受到文件')
             file_handler =await hs.handle_file.create(file)
-            operate = await file_handler.handle()
+            response = await file_handler.handle()
             print("进行操作,得到ppt")
-            print(operate)
-            return jsonify({'status':'success','result':operate})
+            return response
         else:
             return jsonify({'status':'fail','message':'接受文件失败'})
     except Exception as e:

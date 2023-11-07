@@ -6,6 +6,8 @@
 </template>
 
 <script>
+// import axios from 'axios';
+
 export default {
     name:'SearchOldData',
     data(){
@@ -16,7 +18,7 @@ export default {
     },
     methods:{
         async search(){
-
+            
         }
     }
 }

@@ -51,9 +51,21 @@
       <div v-html="compiledMarkdown"
       style="margin-top:20px">
       </div>
+      <div v-if="compiledMarkdown">
+        <el-button @click="ShowSave">保存总结</el-button>
+      </div>
       <div style="margin-top: 10px;" v-if="compiledMarkdown">
         <GetQuestions></GetQuestions>
       </div>
+    </div>
+    <div>
+      <el-dialog v-model="save" title="保存AI生成的回答" destroy-on-close>
+        <SaveAnswer :content="markdown" :type="type" @close-dialog="closedialog"></SaveAnswer>
+      </el-dialog>
+    </div>
+    <!--占位-->
+    <div v-if="!compiledMarkdown" style="display: flex;justify-content:center;">
+      <TianliGenshin></TianliGenshin>
     </div>
     </div>
 </template>
@@ -66,12 +78,16 @@ import MarkdownIt from 'markdown-it'
 import LoadingTips from './LoadingTips.vue';
 import SearchOldData from './SearchOldData.vue';
 import GetQuestions from './GetQuestions.vue';
+import SaveAnswer from './SaveAnswer.vue';
+import TianliGenshin from './TianliGenshin.vue';
 export default {
   name: 'GetSummarize',
   components:{
     LoadingTips,
     SearchOldData,
     GetQuestions,
+    SaveAnswer,
+    TianliGenshin,
   },
   data() {
     return {
@@ -80,7 +96,7 @@ export default {
       fileUrl: '',
       fileuploaded: false,
       md:new MarkdownIt(),
-      markdown:'',
+      markdown:'# hello',
       isloading:false,
       submitting:true,
       error:false,
@@ -90,6 +106,8 @@ export default {
       successRestart:false,
       showquestions:false,
       quesload:false,
+      save:false,
+      type:1,
     };
   },
   computed:{
@@ -98,6 +116,12 @@ export default {
     },
   },
   methods: {
+    closedialog(){
+      this.save = false
+    },
+    ShowSave(){
+      this.save = true;
+    },
     showifgenerate(data){
       this.quesload = data;
     },

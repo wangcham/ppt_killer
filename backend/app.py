@@ -3,6 +3,7 @@ from quart import Quart, request, Blueprint
 from route.getfile import getfile_app
 import os
 import asyncio
+import db
 
 app = Quart(__name__, template_folder="../frontend/dist", static_folder="../frontend/dist", static_url_path="")
 
@@ -15,6 +16,9 @@ async def index():
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     try:
+        database = db.database()
+        database.create()
+        database.show()
         loop.run_until_complete(app.run_task(host='0.0.0.0', port=5000))
     except KeyboardInterrupt:
         pass
