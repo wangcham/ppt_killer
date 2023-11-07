@@ -5,7 +5,7 @@
         <div>
             <el-dialog title="未查询到此密钥，是否要创建新密钥保存结果？" v-model="CreateNewToken">
                 <div style="display: flex;flex-direction: row;">
-                    <el-button @click="submit" style="margin-right: 10px;">确认</el-button>
+                    <el-button @click="submitagain" style="margin-right: 10px;">确认</el-button>
                     <el-button @click="CreateNewToken=false">取消</el-button>
                 </div>
             </el-dialog>
@@ -30,6 +30,9 @@ export default {
         }
     },
     methods:{
+        async submitagain(){
+            //未查询到token，进行确认
+        },
         async submit(){
             try{
                 await axios.post(common.backend_prefix+'/saveanswer',{
@@ -50,8 +53,9 @@ export default {
                         ElMessage.success('保存成功')
                         this.$emit('close-dialog')
                     }
-                    if(response.data == null){
-                        ElMessage.error('服务器未响应')
+                    if(response.data.status == 'fail'){
+                        ElMessage.error('服务器发生错误')
+                        console.log(response.data.message)
                     }
                 }
             ).catch(

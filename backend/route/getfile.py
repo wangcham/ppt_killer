@@ -3,6 +3,7 @@ from quart import request,Blueprint,jsonify
 from quart_cors import cors
 import service.handle_service as hs
 from entities.exceptions import GetContentError,EmptyFileError
+import ai.get_response as gr
 
 
 getfile_app = Blueprint('getfile_app',__name__)
@@ -33,7 +34,10 @@ async def getques():
         content = data['content']
         #编写逻辑
         if content:
-            pass
+            getres = gr.response()
+            result = getres.get_generated_answer(content)
+
+            return result
         else:
             return jsonify({'status':'fail','message':'获得的内容为空'})
 

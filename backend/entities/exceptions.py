@@ -6,3 +6,9 @@ class ImageTransferError(Exception):
 
 class GetContentError(Exception):
     pass
+
+class ChatgptGenerateError(Exception):
+    pass
+
+class SqliteError(Exception):
+    pass
