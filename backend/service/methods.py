@@ -24,7 +24,7 @@ class GetText:
                 for shape in slide.shapes:
                     if hasattr(shape, 'text'):
                         text += shape.text + '\n'
-                    if shape.shape_type == 13:  # This is the type for a Picture
+                    if shape.shape_type == 13:
                         image = shape.image
                         try:
                             img = Image.open(io.BytesIO(image.blob))

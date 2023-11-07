@@ -1,4 +1,4 @@
-
+import checktokens
 import os
 import traceback
 import openai
@@ -11,9 +11,18 @@ class response:
     async def complete(self):
         try:
             openai.proxy = "http://127.0.0.1:7890"
+            check = checktokens.CheckTokens()
+            type = check.get_num_tokens(self.text)
+
+            if type == 1:
+                used_model = "gpt-3.5-turbo-16k"
+            if type == 2:
+                used_model = "gpt-3.5-turbo"
+                print("调用gpt3.5turbo接口")
+
             openai.api_key = config.openai_api_key
             completion = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo-16k",
+                model=used_model,
                 messages=[
                     {"role": "system", "content": "你是一个助手"},
                     {"role": "user", "content": "请给我总结这些内容，我给你的文本的内容是乱的，请你认真思考一下，把他整理清楚，给出我中文的回复，不允许省略回复，以大小标题等的形式生成大纲，另外，生成的回答必须是markdown格式,记得写成垂直方向的换行，也就是需要你加换行的标志，让他形式好看一点，并且请翻译成中文：" + self.text}

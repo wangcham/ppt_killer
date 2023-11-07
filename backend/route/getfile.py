@@ -18,7 +18,7 @@ async def getfile():
             print("进行操作,得到ppt")
             return response
         else:
-            return jsonify({'status':'fail','message':'接受文件失败'})
+            return jsonify({'status':'fail','message':'接受文件失败','code':'0'})
     except Exception as e:
         print(traceback.format_exc())
         return jsonify({'status':'fail','message':'抛出异常'})

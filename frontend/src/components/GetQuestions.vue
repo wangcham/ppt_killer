@@ -37,7 +37,7 @@ export default {
     },
     data(){
         return{
-            markdown:'# world',
+            markdown:'',
             md:new MarkdownIt(),
             error:false,
             message:'',
