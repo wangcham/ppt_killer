@@ -1,8 +1,7 @@
 <template>
   <div v-loading="quesload">
     <div>
-      <p>{{ summarize }}</p>
-        <el-button @click="getquestions" v-if="first">点击生成AI问题</el-button>
+        <el-button @click="getquestions" v-if="first">点击使AI生成问题</el-button>
         <el-button v-if="!first" @click="getquestions">重新生成问题</el-button>
     </div>
     <div v-html="compiledMarkdown">
@@ -39,7 +38,7 @@ export default {
     props:['summarize'],
     data(){
         return{
-            markdown:'',
+            markdown:'# world',
             md:new MarkdownIt(),
             error:false,
             message:'',
@@ -85,7 +84,7 @@ export default {
                   this.message = response.data.result
                   this.isloading = false
                 }else{
-                  this.markdown2 = response.data.result
+                  this.markdown = response.data.result
                   this.successRestart = true
                   ElMessage.success("成功响应！")
                   this.isloading = false

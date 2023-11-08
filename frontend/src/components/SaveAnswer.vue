@@ -51,8 +51,8 @@ export default {
             }catch{
                 error =>{
                     console.log(error)
+                    ElMessage.error('发生错误：'+error)
                 }
-                ElMessage.error('发生错误')
             }
         },
         async submit(){

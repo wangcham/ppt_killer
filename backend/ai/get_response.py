@@ -1,4 +1,4 @@
-import checktokens
+from . import checktokens
 import os
 import traceback
 import openai
@@ -7,7 +7,6 @@ from quart import jsonify
 from entities.exceptions import ChatgptGenerateError
 class response:
     def __init__(self, text):
-        self.text = ""
         self.text = text
 
     async def complete(self):
@@ -18,10 +17,9 @@ class response:
             
             # openai.api_key = os.getenv('API_KEY')
             # openai.api_base = os.getenv('API_BASE')
-
+            
             check = checktokens.CheckTokens()
             type = check.get_num_tokens(self.text)
-
             if type == 1:
                 used_model = "gpt-3.5-turbo-16k"
                 print("调用gpt16k")
@@ -44,7 +42,7 @@ class response:
             self.result = "#### chatgpt响应异常,异常是" + str(e) + "请稍后使用网站~"
             return jsonify({'status':'fail','result':'chatgpt发生异常'})
 
-    async def get_generated_answer(ques_text):
+    async def get_generated_answer(self,ques_text):
 
         openai.proxy = "http://127.0.0.1:7890"
         openai.api_key = config.openai_api_key
@@ -65,7 +63,7 @@ class response:
                 model=used_model,
                 messages=[
                     {"role": "system", "content": "你是一个帮助人们理解PPT的助手"},
-                    {"role": "user", "content": "请将这些杂乱的文本整理清楚，然后依据这些内容生成大约二三十道简答题，然后必须以markdown的形式发送给我，文本内容是：" + ques_text}
+                    {"role": "user", "content": "请将这些杂乱的文本整理清楚，然后依据这些内容生成大约二三十道问题，并且在最后给出答案，然后必须以markdown的形式发送给我，文本内容是：" + ques_text}
                 ]
             )
             result = completion.choices[0].message['content']

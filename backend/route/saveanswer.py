@@ -8,7 +8,7 @@ cors(saveanswer_app)
 
 @saveanswer_app.route('/saveanswer',methods=['post'])
 async def saveanswer():
-    data = request.get_json()
+    data = await request.get_json()
     content = data['content']
     type = data['type']
     token = data['token']

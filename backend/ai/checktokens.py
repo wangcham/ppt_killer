@@ -1,7 +1,7 @@
 import tiktoken
 
 class CheckTokens:
-    def get_num_tokens(text) -> int:
+    def get_num_tokens(self,text) -> int:
         encoding = tiktoken.get_encoding("cl100k_base")
         encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
 

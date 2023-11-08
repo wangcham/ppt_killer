@@ -27,15 +27,15 @@ async def getfile():
         print(traceback.format_exc())
         return jsonify({'status':'fail','message':'抛出异常'})
 
-@getfile.route('/getques',methods=['post'])
+@getfile_app.route('/getques',methods=['post'])
 async def getques():
     try:
-        data = request.get_json()
+        data = await request.get_json()
         content = data['content']
         #编写逻辑
         if content:
-            getres = gr.response()
-            result = getres.get_generated_answer(content)
+            getres = gr.response(content)
+            result = await getres.get_generated_answer(content)
 
             return result
         else:

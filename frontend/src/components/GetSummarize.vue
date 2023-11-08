@@ -96,7 +96,7 @@ export default {
       fileUrl: '',
       fileuploaded: false,
       md:new MarkdownIt(),
-      markdown:'',
+      markdown:'# hello',
       isloading:false,
       submitting:true,
       error:false,
@@ -170,7 +170,7 @@ export default {
             // 处理成功响应
             console.log(response);
             if (response.data.status === 'fail') {
-              ElMessage.error(response.data.message)
+              ElMessage.error('服务器响应异常')
               this.isloading = false
               this.error = true
               this.message = response.data.result
