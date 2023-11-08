@@ -3,7 +3,7 @@
         <el-input v-model="token" placeholder="请输入自己的密钥"></el-input>
         <el-button style="margin-top: 20px;" @click="submit">提交</el-button>
         <div>
-            <el-dialog title="未查询到此密钥，是否要创建新密钥保存结果？" v-model="CreateNewToken">
+            <el-dialog title="未查询到此密钥，是否要创建此密钥为新密钥并保存结果？" v-model="CreateNewToken">
                 <div style="display: flex;flex-direction: row;">
                     <el-button @click="submitagain" style="margin-right: 10px;">确认</el-button>
                     <el-button @click="CreateNewToken=false">取消</el-button>
@@ -32,6 +32,28 @@ export default {
     methods:{
         async submitagain(){
             //未查询到token，进行确认
+            try{
+                await axios.post(common.backend_prefix+"/saveagain",{
+                    'content':this.content,
+                    'type':this.type,
+                    'token':this.token,   
+                }).then(
+                    response =>{
+                        if(response.data.status == 'fail'){
+                            ElMessage.error('保存失败')
+                            console.log(response.data.message)
+                        }else{
+                            ElMessage.success('保存成功')
+                            this.CreateNewToken = false
+                        }
+                    }
+                )
+            }catch{
+                error =>{
+                    console.log(error)
+                }
+                ElMessage.error('发生错误')
+            }
         },
         async submit(){
             try{
@@ -47,15 +69,11 @@ export default {
                         this.CreateNewToken = true
                     }
                     if(response.data.code == '2'){
-                        ElMessage.error('AI生成回答失败')
+                        ElMessage.error(response.data.message)
                     }
                     if(response.data.code == '3'){
                         ElMessage.success('保存成功')
                         this.$emit('close-dialog')
-                    }
-                    if(response.data.status == 'fail'){
-                        ElMessage.error('服务器发生错误')
-                        console.log(response.data.message)
                     }
                 }
             ).catch(

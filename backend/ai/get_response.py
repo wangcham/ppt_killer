@@ -12,7 +12,13 @@ class response:
 
     async def complete(self):
         try:
+            
             openai.proxy = "http://127.0.0.1:7890"
+            openai.api_key = config.openai_api_key
+            
+            # openai.api_key = os.getenv('API_KEY')
+            # openai.api_base = os.getenv('API_BASE')
+
             check = checktokens.CheckTokens()
             type = check.get_num_tokens(self.text)
 
@@ -23,7 +29,6 @@ class response:
                 used_model = "gpt-3.5-turbo"
                 print("调用gpt3.5turbo接口")
 
-            openai.api_key = config.openai_api_key
             completion = openai.ChatCompletion.create(
                 model=used_model,
                 messages=[
@@ -40,7 +45,13 @@ class response:
             return jsonify({'status':'fail','result':'chatgpt发生异常'})
 
     async def get_generated_answer(ques_text):
+
         openai.proxy = "http://127.0.0.1:7890"
+        openai.api_key = config.openai_api_key
+        
+        # openai.api_key = os.getenv('API_KEY')
+        # openai.api_base = os.getenv('API_BASE')
+
         check = checktokens.CheckTokens()
         type = check.get_num_tokens(ques_text)
 
@@ -50,7 +61,6 @@ class response:
             used_model = "gpt-3.5-turbo"
         
         try:
-            openai.api_key = config.openai_api_key
             completion = openai.ChatCompletion.create(
                 model=used_model,
                 messages=[

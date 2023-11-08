@@ -22,7 +22,7 @@ async def saveanswer():
         sql2 = "INSERT INTO info (token,type,content) VALUES (?,?,?)"
         try:
             result = database.execute(sql2,(token,type,content,))
-            #处理
+            return jsonify({'status':'success','code':'3'})
         except SqliteError:
             print("数据库插入操作失败")
-            return jsonify({'status':'fail','message':'数据库插入操作失败'})
+            return jsonify({'status':'fail','message':'数据库插入操作失败','code':'2'})
