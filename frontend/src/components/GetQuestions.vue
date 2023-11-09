@@ -38,7 +38,7 @@ export default {
     props:['summarize'],
     data(){
         return{
-            markdown:'# world',
+            markdown:'',
             md:new MarkdownIt(),
             error:false,
             message:'',

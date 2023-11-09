@@ -43,10 +43,19 @@ export default {
                             ElMessage.error('保存失败')
                             console.log(response.data.message)
                         }else{
-                            ElMessage.success('保存成功')
+                            ElMessage.success(response.data.message)
                             this.CreateNewToken = false
+                            this.$emit('close-dialog')
                         }
                     }
+                ).catch(
+                    error =>{
+                        console.log(error)
+                        ElMessage.error("发生错误"+error)
+                        this.CreateNewToken = false
+                    }
+                ).finally(
+                    this.CreateNewToken = false
                 )
             }catch{
                 error =>{
@@ -56,6 +65,14 @@ export default {
             }
         },
         async submit(){
+            if(this.token == ''){
+                ElMessage.error('密钥不能为空！')
+                return
+            }
+            if(this.token.length <= 6){
+                ElMessage.error('密钥不能少于6位')
+                return
+            }
             try{
                 await axios.post(common.backend_prefix+'/saveanswer',{
                 'content':this.content,

@@ -22,7 +22,6 @@ if __name__ == '__main__':
     try:
         database = db.database()
         database.create()
-        database.show()
         loop.run_until_complete(app.run_task(host='0.0.0.0', port=5000))
     except KeyboardInterrupt:
         pass

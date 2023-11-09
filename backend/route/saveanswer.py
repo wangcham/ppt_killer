@@ -26,3 +26,18 @@ async def saveanswer():
         except SqliteError:
             print("数据库插入操作失败")
             return jsonify({'status':'fail','message':'数据库插入操作失败','code':'2'})
+        
+@saveanswer_app.route('/saveagain',methods=['post'])
+async def saveagain():
+    data = await request.get_json()
+    content = data['content']
+    type = data['type']
+    token = data['token']
+
+    sql2 = "INSERT INTO info (token,type,content) VALUES (?,?,?)"
+    try:
+        database = db.database()
+        database.execute(sql2,(token,type,content,))
+        return jsonify({'status':'success','message':'保存成功'})
+    except SqliteError:
+        return jsonify({'status':'fail','message':'数据库操作失败'})

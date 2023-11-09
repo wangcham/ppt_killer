@@ -96,7 +96,7 @@ export default {
       fileUrl: '',
       fileuploaded: false,
       md:new MarkdownIt(),
-      markdown:'# hello',
+      markdown:'',
       isloading:false,
       submitting:true,
       error:false,

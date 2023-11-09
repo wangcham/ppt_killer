@@ -1,4 +1,5 @@
 import sqlite3
+#create table
 table_one = """
 CREATE TABLE if not exists info(
     token VARCHAR(255),
@@ -38,17 +39,6 @@ class database:
     
     def create(self):
         self.execute(table_one)
+        print("成功建表")
         
-        sql = """
-        INSERT INTO info (token,type,content) VALUES (?,?,?);
-        """
-        self.execute(sql,("sqllite数据库",233,"成功启动！"))
-
-    def show(self):
-        sql = "select * from info;"
-        results = self.execute(sql)
-        if results:
-            print(results[0][0]+str(results[0][1])+results[0][2])
-        else:
-            print("存储失败")
     
