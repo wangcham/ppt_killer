@@ -1,4 +1,4 @@
-const backend_prefix = 'http://localhost:5000'
+const backend_prefix = ''
 export default{
     backend_prefix
 }

@@ -6,8 +6,7 @@ from pptx.util import Inches,Pt
 import pytesseract
 from PIL import Image
 import ai.get_response
-import aspose.slides as slides
-import aspose.pydrawing as drawing
+
 
 
 class GetText:

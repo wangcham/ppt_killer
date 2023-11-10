@@ -10,7 +10,7 @@
         <el-link @click="dialogvisible()" :underline='false' style="margin-left:30px;" type="primary">
             查看本站提示<el-icon style="margin-left:5px;margin-top: 1px;"><MagicStick /></el-icon>
         </el-link>
-        <el-link style="margin-left:30px;" type="primary" :underline='false'>
+        <el-link style="margin-left:30px;" type="primary" :underline='false' @click="gotochatgptpage">
             使用chatgpt<el-icon style="margin-left:5px;margin-top: 2px;"><Comment /></el-icon>
         </el-link>
         <!--tips-->
@@ -42,6 +42,9 @@ export default {
     methods:{
         dialogvisible(){
             this.showdialog = true;
+        },
+        gotochatgptpage(){
+            window.location.href = "https://www.firstimpression.top"
         },
     }
 }

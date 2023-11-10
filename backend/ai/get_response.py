@@ -5,18 +5,15 @@ import openai
 import config
 from quart import jsonify
 from entities.exceptions import ChatgptGenerateError
+from . import setaiconfig
 class response:
     def __init__(self, text):
         self.text = text
 
     async def complete(self):
         try:
-            
-            openai.proxy = "http://127.0.0.1:7890"
-            openai.api_key = config.openai_api_key
-            
-            # openai.api_key = os.getenv('API_KEY')
-            # openai.api_base = os.getenv('API_BASE')
+           
+            setaiconfig.setconfig()
             
             check = checktokens.CheckTokens()
             type = check.get_num_tokens(self.text)
@@ -44,11 +41,7 @@ class response:
 
     async def get_generated_answer(self,ques_text):
 
-        openai.proxy = "http://127.0.0.1:7890"
-        openai.api_key = config.openai_api_key
-        
-        # openai.api_key = os.getenv('API_KEY')
-        # openai.api_base = os.getenv('API_BASE')
+        setaiconfig.setconfig()
 
         check = checktokens.CheckTokens()
         type = check.get_num_tokens(ques_text)
