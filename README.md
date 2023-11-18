@@ -54,7 +54,7 @@ python3 app.py
 ### 建议配合free-one-api与one-api食用
 
 这两个仓库是管理api key的，其中free-one-api为逆向库。<br>
-查看 [free-one-api](https://github.com/RockChinQ/free-one-api)
+查看 [free-one-api](https://github.com/RockChinQ/free-one-api)<br>
 查看 [one-api](https://github.com/songquanpeng/one-api/)
 
 ## 网站截图
