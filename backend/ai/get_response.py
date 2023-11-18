@@ -2,7 +2,6 @@ from . import checktokens
 import os
 import traceback
 import openai
-import config
 from quart import jsonify
 from entities.exceptions import ChatgptGenerateError
 from . import setaiconfig

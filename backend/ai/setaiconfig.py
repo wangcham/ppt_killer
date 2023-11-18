@@ -1,5 +1,4 @@
 import openai
-import config
 import os
 
 def setconfig():
