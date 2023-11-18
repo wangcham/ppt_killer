@@ -37,7 +37,7 @@ class response:
         except Exception as e:
             print(traceback.format_exc())
             self.result = "#### chatgpt响应异常,异常是" + str(e) + "请稍后使用网站~"
-            return jsonify({'status':'fail','result':'chatgpt发生异常'})
+            return jsonify({'status':'fail','result':'chatgpt发生异常,请联系管理员！'})
 
     async def get_generated_answer(self,ques_text):
 
