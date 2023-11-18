@@ -24,10 +24,10 @@
 
 ```
 #拉取docker镜像
-docker pull wangcham/ppt_killer:v1.0
+docker pull wangcham/pptkiller
 
-#启动！
-docker run -it -d -p 5000:5000 -e API_KEY=your_api_key -e API_BASE=api_base_url --name pptkiller wangcham/ppt_killer:v1.0
+#启动！(没有加API_BASE)
+docker run -it -d -p 5000:5000 -e API_KEY=your-api-key --name pptkiller wangcham/pptkiller
 ```
 
 ### 手动部署
@@ -56,6 +56,7 @@ python3 app.py
 这两个仓库是管理api key的，其中free-one-api为逆向库。<br>
 查看 [free-one-api](https://github.com/RockChinQ/free-one-api)<br>
 查看 [one-api](https://github.com/songquanpeng/one-api/)
+<strong>目前one-api使用出现报错http code 200的问题，谨慎使用！</strong>
 
 ## 网站截图
 <img  src="./assets/1.png" style="margin-bottom:10px"/>
