@@ -26,14 +26,14 @@
 #拉取docker镜像
 docker pull wangcham/pptkiller
 
-#启动！(没有加API_BASE)
+#启动！(可加入环境变量API_BASE,本条命令没有加)
 docker run -it -d -p 5000:5000 -e API_KEY=your-api-key --name pptkiller wangcham/pptkiller
 ```
 
 ### 手动部署
 
 ```
-#拉取源代码
+#拉取源代码(国内用户可使用gitee地址拉取代码)
 git clone https://github.com/wangcham/ppt_killer.git
 
 #进入前端
@@ -51,12 +51,17 @@ python3 app.py
 
 <striong>强烈推荐使用docker部署！</strong>
 
+安装好之后，在浏览器打开<strong>IP地址:5000</strong>就可以看到部署成功的pptkiller
+
+
 ### 建议配合free-one-api与one-api食用
 
 这两个仓库是管理api key的，其中free-one-api为逆向库。<br>
 查看 [free-one-api](https://github.com/RockChinQ/free-one-api)<br>
-查看 [one-api](https://github.com/songquanpeng/one-api/)
-<strong>目前one-api使用出现报错http code 200的问题，谨慎使用！</strong>
+查看 [one-api](https://github.com/songquanpeng/one-api/)<br>
+<strong>目前one-api使用可能出现报错http code 200的问题，谨慎使用！(可能是使用的openai库版本较低的原因，后续会修复以配合one-api)</strong>
+
+
 
 ## 网站截图
 <img  src="./assets/1.png" style="margin-bottom:10px"/>
@@ -65,3 +70,7 @@ python3 app.py
 <hr>
 <img src="./assets/3.png">
 
+## 后续会支持的功能
+1. 支持将文本切分成小段，以加快响应速度
+2. 可供用户选择的其他模型与配置
+3. 页面优化
