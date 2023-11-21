@@ -74,3 +74,6 @@ python3 app.py
 1. 支持将文本切分成小段，以加快响应速度
 2. 可供用户选择的其他模型与配置
 3. 页面优化
+
+## 特别感谢
+@[theLazy](https://thelazy.cn/)设计的天理原神启动页动画，素材在[此仓库](https://github.com/the-lazy-me/sourceBox)中
